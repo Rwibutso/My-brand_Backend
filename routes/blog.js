@@ -11,7 +11,7 @@ blogs.get("/blog/:id", oneBlog);
 
 blogs.post("/add-blog", addBlog);
 
-blogs.patch("/ip-blog/:id", checkToken, patchBlog);
+blogs.patch("/edit-blog/:id", checkToken, patchBlog);
 
 blogs.delete("/del-blog/:id", checkToken, deleteBlog);
 

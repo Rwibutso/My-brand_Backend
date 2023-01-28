@@ -15,7 +15,7 @@
 - Node.js
 - MongoDB
 
-## How to use
+## How to usesus
 
 1. Clone the repository: git clone https://github.com/Rwibutso/my-brand_backend.git
 2. Install the dependencies: npm install
