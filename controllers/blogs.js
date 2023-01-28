@@ -1,7 +1,6 @@
 const Blog = require('../model/Blog');
 const jwt = require('jsonwebtoken');
 const {blogValidation} = require('../middlewares/validation.js');
-const blogs = require('../routes/blog');
 
 
 
@@ -34,7 +33,7 @@ let addBlog = async function(req, res)
 
 let Allblogs = async function(req, res)
 {
-    const blog = await Blog.find();
+    const blogs = await Blog.find();
     res.send(blogs);
  };
  

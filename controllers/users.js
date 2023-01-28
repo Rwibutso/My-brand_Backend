@@ -26,7 +26,8 @@ let userRegister = async function(req, res)
    // create new user 
 
     const user = new User({
-        name: req.body.name,
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
         email: req.body.email,
         password: hashedPassword,
 
@@ -91,9 +92,12 @@ let usersGet = async function(req, res)
      try{
          const user = await User.findOne({_id: req.params.id})
  
-         if(req.body.name){
-             user.name = req.body.name
+         if(req.body.firstname){
+             user.firstname = req.body.firstname
          }
+         if(req.body.lastname){
+            user.lastname = req.body.lastname
+        }
          if(req.body.email){
              user.email = req.body.email
          }

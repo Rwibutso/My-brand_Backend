@@ -8,12 +8,12 @@ users.get("/users", usersGet)
 
 users.get("/users/:id", userGet)
 
-users.post("/user/register", userRegister)
+users.post("/user-register", userRegister)
 
-users.post("/user/login", userLogin)
+users.post("/user-login", userLogin)
 
-users.patch("/ip-users/:id", userPatch)
+users.patch("/edit-user/:id", userPatch)
 
-users.delete("/del-users/:id", userDelete)
+users.delete("/del-user/:id", userDelete)
 
 module.exports = users;
