@@ -2,8 +2,11 @@ const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
 //import route
-const authRoute = require('./routes/auth');
+const users = require('./routes/user');
+const blogs = require('./routes/blog');
+const messages = require('./routes/message');
 const mongoose = require('mongoose');
+
 
 dotenv.config();
 //connect db
@@ -17,8 +20,12 @@ process.env.DB_CONNECT,
 //middleware 
 app.use(express.json());
 
-app.use('/api/user', authRoute);
+app.use('/api', users);
+app.use('/api/', blogs);
+app.use('/api', messages)
 
 
 
-app.listen(3000, () => console.log('Server is up and running'));
+
+
+app.listen(3002, () => console.log('Server is up and running'));
