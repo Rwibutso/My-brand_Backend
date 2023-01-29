@@ -1,6 +1,8 @@
 const Blog = require('../model/Blog');
-const jwt = require('jsonwebtoken');
-const {blogValidation} = require('../middlewares/validation.js');
+const Comment = require('../model/comment');
+const Like = require('../model/like');
+const {blogValidation, commentValidation} = require('../middlewares/validation.js');
+const { func } = require('@hapi/joi');
 
 
 
@@ -32,14 +34,14 @@ let addBlog = async function(req, res)
 //Get all blogs
 
 let Allblogs = async function(req, res)
-{
+ {
     const blogs = await Blog.find();
     res.send(blogs);
- };
+};
  
- //Get blog by id
+//Get blog by id
  
- let oneBlog = async function(req, res)
+let oneBlog = async function(req, res)
  {
      try{
          const blog = await Blog.findOne({ _id: req.params.id})
@@ -48,11 +50,11 @@ let Allblogs = async function(req, res)
          res.status(404)
          res.send({error: "blog doesn't exist!"})
      }
-  };
+};
  
-  // Edit blog by id
+// Edit blog by id
   
-  let patchBlog = async function(req, res)
+let patchBlog = async function(req, res)
   {
      try{
          const blog = await Blog.findOne({_id: req.params.id})
@@ -70,11 +72,11 @@ let Allblogs = async function(req, res)
          res.status(404)
          res.send({error:"blog doesn't exist!!"})
      }
-  };
+};
  
-  // Delete the user by id
+// Delete the user by id
  
-  let deleteBlog = async function(req, res)
+ let deleteBlog = async function(req, res)
   {
      try{
          await Blog.deleteOne({_id: req.params.id})
@@ -84,7 +86,102 @@ let Allblogs = async function(req, res)
          res.status(404)
          res.send({error:"blog doesn't exist!"})
      }
-  };
+};
 
-  module.exports ={ deleteBlog, oneBlog, Allblogs, patchBlog, addBlog}
+// Save a blog like
 
+let likeBlog  = async function(req, res)
+{
+    const blogId = await Blog.findOne({ _id: req.params.id})
+     
+    const like = new Like({
+        author: req.body.author,
+        blogId: blogId.id,
+    });
+     try{    
+        const saveLike = await like.save()
+        res.send(saveLike);
+    }catch (err) {
+        res.status(400).send("..."+err); 
+    };
+};
+
+let getlikeBlog = async function(req, res)
+   {
+    try{
+        const likes = await Like.find({ blogId: req.params.id});
+        res.send(likes)
+      
+  } catch {
+      res.send("blog doesn't exist!")
+  }
+};
+  
+let getlikeBlognumber = async function(req, res)
+   {
+    try{
+        const likes = await Comment.find({ blogId: req.params.id});
+        res.send(likes).length
+      
+  } catch {
+      res.send("blog doesn't exist!")
+  }
+};
+
+// coment a blog
+
+let commentBlog  = async function(req, res)
+ {
+    // validate the comment
+
+    const {error} = commentValidation(req.body);
+    if (error) return res.status(400).send(error.details[0].message); 
+
+    // create a comment
+
+    const blogId = await Blog.findOne({_id: req.params.id});
+
+    const comment = new Comment({
+        comment: req.body.comment,
+        author: req.body.author,
+        blogId: blogId.id,
+    });
+    try{    
+        const saveComment = await comment.save()
+        res.send(saveComment);
+    }catch (err) {
+        res.status(400).send("..."+err); 
+    };
+}
+
+// get a coment a blog by id
+
+let getcomentBlog = async function(req, res)
+   {
+
+      try{
+            const comments = await Comment.find({ blogId: req.params.id});
+            res.send(comments)
+          
+      } catch {
+          res.send("blog doesn't exist!")
+      }
+};
+
+// number of coments of a blog
+
+let getcomentBlogNumber = async function(req, res)
+   {
+
+      try{
+            const comments = await Comment.find({ blogId: req.params.id});
+            res.send(comments).length
+          
+      } catch {
+          res.send("blog doesn't exist!")
+      }
+};
+  
+  
+
+module.exports ={ deleteBlog, oneBlog, Allblogs, patchBlog, addBlog, likeBlog, getlikeBlog, getlikeBlognumber, commentBlog, getcomentBlog, getcomentBlogNumber}

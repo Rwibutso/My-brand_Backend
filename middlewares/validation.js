@@ -45,7 +45,19 @@ const messageValidation = (data) =>{
     return Joi.validate(data, Schema)
 };
 
+// Blog-comment validation
+
+const commentValidation = (data) =>{
+    const Schema = {
+        comment: Joi.string().min(3).required(),
+        author: Joi.string().min(3).required(),
+        blogId: Joi.string().min(20).required(),
+    };
+    return Joi.validate(data, Schema)
+};
+
 module.exports.registerValidation = registerValidation;
 module.exports.loginValidation = loginValidation;
 module.exports.blogValidation = blogValidation;
 module.exports.messageValidation = messageValidation;
+module.exports.commentValidation = commentValidation
