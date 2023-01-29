@@ -259,7 +259,7 @@ app.use('/api', users);
  * @swagger
  * /api/blog/{id}:
  *  get:
- *      summary: Add blog by Id
+ *      summary: Get blog by Id
  *      tags: [blogs]
  *      description: This will display an ID of a selected blog in the database
  *      parameters:
@@ -278,6 +278,64 @@ app.use('/api', users);
  *                          type: array
  *                          items:
  *                               $ref: '#components/schemas/blog'
+ */
+
+
+/**
+ * @swagger
+ * /api/blog-like-get/{id}:
+ *  get:
+ *      summary: Add blog like 
+ *      tags: [blogs]
+ *      description: This will add a like on the blog in the database
+ *      parameters:
+ *           - in: path
+ *             name: id
+ *             required: true
+ *             description: Numeric ID required
+ *             schema:
+ *                 type: string
+ *      responses:
+ *          200:
+ *              description: comments retieved successfully!
+ *              content:
+ *                  application/json:
+ *                       schema:
+ *                              properties:
+ *                                    author: 
+ *                                        type: string
+ *                                    blogId:
+ *                                         type: string
+ */
+
+
+/**
+ * @swagger
+ * /api/blog-comment-get/{id}:
+ *  get:
+ *      summary: Add blog comment 
+ *      tags: [blogs]
+ *      description: This will add a comment on the blog in the database
+ *      parameters:
+ *           - in: path
+ *             name: id
+ *             required: true
+ *             description: Numeric ID required
+ *             schema:
+ *                 type: string
+ *      responses:
+ *          200:
+ *              description: comments retieved successfully!
+ *              content:
+ *                  application/json:
+ *                       schema:
+ *                              properties:
+ *                                    comment:
+ *                                         type: string
+ *                                    author: 
+ *                                        type: string
+ *                                    blogId:
+ *                                         type: string
  */
 
 
@@ -331,6 +389,67 @@ app.use('/api', users);
  *              description: blog added successfully!
  */
 
+
+/**
+ * @swagger
+ * /api/blog-like/{id}:
+ *  post:
+ *      summary: Add blog like 
+ *      tags: [blogs]
+ *      description: This will add a like on the blog in the database
+ *      parameters:
+ *           - in: path
+ *             name: id
+ *             required: true
+ *             description: Numeric ID required
+ *             schema:
+ *                 type: string
+ *      requestBody: 
+ *            required: true
+ *            content:
+ *                  application/json:
+ *                       schema:
+ *                              properties:
+ *                                    author: 
+ *                                        type: string
+ *                                    blogId:
+ *                                         type: string
+ *      responses:
+ *          200:
+ *              description: like added successfully!
+ */
+
+
+/**
+ * @swagger
+ * /api/blog-comment/{id}:
+ *  post:
+ *      summary: Add blog comment 
+ *      tags: [blogs]
+ *      description: This will add a comment on the blog in the database
+ *      parameters:
+ *           - in: path
+ *             name: id
+ *             required: true
+ *             description: Numeric ID required
+ *             schema:
+ *                 type: string
+ *      requestBody: 
+ *            required: true
+ *            content:
+ *                  application/json:
+ *                       schema:
+ *                              properties:
+ *                                    comment:
+ *                                         type: string
+ *                                    author: 
+ *                                        type: string
+ *                                    blogId:
+ *                                         type: string
+ *      responses:
+ *          200:
+ *              description: comment added successfully!
+ */
 
 
 /**
