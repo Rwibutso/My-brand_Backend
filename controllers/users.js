@@ -30,7 +30,6 @@ let userRegister = async function(req, res)
         lastname: req.body.lastname,
         email: req.body.email,
         password: hashedPassword,
-
     });
     try{
         const saveUser = await user.save();

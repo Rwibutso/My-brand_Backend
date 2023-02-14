@@ -1,7 +1,8 @@
 const Blog = require('../model/Blog');
 const Comment = require('../model/comment');
 const Like = require('../model/like');
-const {blogValidation, commentValidation} = require('../middlewares/validation.js');
+const User = require('../model/User');
+const {blogValidation, commentValidation, likeValidation} = require('../middlewares/validation.js');
 const { func } = require('@hapi/joi');
 
 
@@ -17,10 +18,12 @@ let addBlog = async function(req, res)
     if (error) return res.status(400).send(error.details[0].message); 
 
    // create new blog 
-
+    const user = await User.findById({ _id: req.params.id});
     const blog = new Blog({
         tittle: req.body.tittle,
         description: req.body.description,
+        user: user.id,
+        name: user.firstname +" "+ user.lastname
     });
     try{
         const saveBlog = await blog.save();
@@ -90,21 +93,31 @@ let patchBlog = async function(req, res)
 
 // Save a blog like
 
-let likeBlog  = async function(req, res)
-{
-    const blogId = await Blog.findOne({ _id: req.params.id})
-     
+let likeBlog  = async function(req, res) {
+    // validate the like
+    const {error} = likeValidation(req.body);
+    if (error) return res.status(400).send(error.details[0].message); 
+  
+    // create a like
+    const user = await User.findOne({ _id: req.params.id}); 
     const like = new Like({
-        author: req.body.author,
-        blogId: blogId.id,
+        name: user.lastname,
+        user: user.id,
+        blogId: req.body.blogId,
     });
-     try{    
-        const saveLike = await like.save()
-        res.send(saveLike);
-    }catch (err) {
-        res.status(400).send("..."+err); 
-    };
-};
+    
+    try {    
+      // Check if the post has already been liked
+
+      const existingLike = await Like.findOne({ user: user.id, blogId: req.body.blogId });
+      if (existingLike) return res.status(400).json({ msg: 'Blog already liked' });
+  
+      const saveLike = await like.save();
+      res.send(saveLike);
+    } catch (err) {
+      res.status(400).send("..." + err); 
+    }
+  };
 
 let getlikeBlog = async function(req, res)
    {
@@ -138,13 +151,12 @@ let commentBlog  = async function(req, res)
     if (error) return res.status(400).send(error.details[0].message); 
 
     // create a comment
-
-    const blogId = await Blog.findOne({_id: req.params.id});
-
+    const user = await User.findOne({_id: req.params.id});
     const comment = new Comment({
+        name: user.lastname,
         comment: req.body.comment,
-        author: req.body.author,
-        blogId: blogId.id,
+        blogId: req.body.blogId,
+        userId: user.id
     });
     try{    
         const saveComment = await comment.save()

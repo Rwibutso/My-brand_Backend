@@ -8,6 +8,7 @@ const registerValidation = (data) =>{
         lastname: Joi.string().min(3).required(),
         email: Joi.string().min(6).required().email(),
         password: Joi.string().min(6).required(),
+
     };
     return Joi.validate(data, schema)
 };
@@ -45,13 +46,20 @@ const messageValidation = (data) =>{
     return Joi.validate(data, Schema)
 };
 
+// Blog-like validation
+
+const likeValidation = (data) =>{
+    const Schema = {
+        blogId: Joi.string().min(22).required(),
+    };
+    return Joi.validate(data, Schema)
+};
 // Blog-comment validation
 
 const commentValidation = (data) =>{
     const Schema = {
         comment: Joi.string().min(3).required(),
-        author: Joi.string().min(3).required(),
-        blogId: Joi.string().min(20).required(),
+        blogId: Joi.string().min(22).required(),
     };
     return Joi.validate(data, Schema)
 };
@@ -60,4 +68,5 @@ module.exports.registerValidation = registerValidation;
 module.exports.loginValidation = loginValidation;
 module.exports.blogValidation = blogValidation;
 module.exports.messageValidation = messageValidation;
-module.exports.commentValidation = commentValidation
+module.exports.commentValidation = commentValidation;
+module.exports.likeValidation =likeValidation
