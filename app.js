@@ -33,7 +33,7 @@ const swaggerOptions = {
         },
         servers:[
              {
-                url:  'http://localhost:10000/'
+                url:  '/'
             }
         ]
     
