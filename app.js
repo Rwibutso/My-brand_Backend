@@ -7,9 +7,12 @@ const blogs = require('./routes/blog');
 const messages = require('./routes/message');
 const mongoose = require('mongoose');
 const swaggerUi = require('swagger-ui-express');
+const cors = require('cors');
 const swaggerJSDoc = require('swagger-jsdoc');
 
 
+app.use(cors());
+app.use(express.json());
 dotenv.config();
 //connect db
 mongoose.set('strictQuery', false);
@@ -19,7 +22,6 @@ process.env.DB_CONNECT,
 { useNewUrlParser: true },
 () => console.log('connected to db!'));
 
-// Extended: https://swagger.io/specification/#infoObject
 
 const swaggerOptions = {
     swaggerDefinition: {
@@ -43,8 +45,6 @@ const swaggerDocs = swaggerJSDoc(swaggerOptions);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
-//middleware 
-app.use(express.json());
 
 // routes
 
