@@ -33,7 +33,7 @@ const swaggerOptions = {
         },
         servers:[
              {
-                url:  'http://localhost:3000/'
+                url:  'https://my-brand-backend-serge.onrender.com'
             }
         ]
     
