@@ -11,12 +11,12 @@ let userRegister = async function(req, res)
     //make validation before making the user
      
     const {error} = registerValidation(req.body);
-    if (error) return res.status(400).send(error.details[0].message); 
+    if (error) return res.status(400).json(error.details[0].message); 
 
     //check if user exists
 
     const userCheck = await User.findOne({email: req.body.email});
-    if (userCheck) return res.status(400).send('Email arleady exists!');
+    if (userCheck) return res.status(400).json('Email arleady exists!');
 
     // encrypt the user password
 
@@ -33,9 +33,9 @@ let userRegister = async function(req, res)
     });
     try{
         const saveUser = await user.save();
-        res.send(saveUser);
+        res.json(saveUser);
     }catch (err) {
-        res.status(400).send(err); 
+        res.status(400).json(err); 
     }
 };  
 
@@ -44,22 +44,22 @@ let userRegister = async function(req, res)
 let userLogin = async function(req, res)
  {
     const {error} = loginValidation(req.body);
-    if (error) return res.status(400).send(error.details[0].message); 
+    if (error) return res.status(400).json(error.details[0].message); 
 
         //check if user exists
 
         const userCheck = await User.findOne({email: req.body.email});
-        if (!userCheck) return res.status(400).send('user not found!');
+        if (!userCheck) return res.status(400).json('user not found!');
 
         // check the password
 
         const passCheck =  await bcrypt.compare(req.body.password, userCheck.password);
-        if (!passCheck) return res.status(400).send('Invalid password!');
+        if (!passCheck) return res.status(400).json('Invalid password!');
          
         //create assign token
 
         const token = jwt.sign({_id: userCheck._id}, process.env.TOKEN_SECRET);
-        res.header('auth-token', token).send(token); 
+        res.header('auth-token', token).json(token); 
 
 };
 
@@ -68,7 +68,7 @@ let userLogin = async function(req, res)
 let usersGet = async function(req, res)
 {
     const users = await User.find();
-    res.send(users);
+    res.json(users);
  };
  
  //Get user by id
@@ -77,10 +77,10 @@ let usersGet = async function(req, res)
  {
      try{
          const user = await User.findOne({ _id: req.params.id})
-         res.send(user)
+         res.json(user)
      } catch{
          res.status(404)
-         res.send({error: "user doesn't exist!"})
+         res.json({error: "user doesn't exist!"})
      }
   };
  
@@ -101,11 +101,11 @@ let usersGet = async function(req, res)
              user.email = req.body.email
          }
          await user.save()
-         res.send(user)
+         res.json(user)
      }
      catch{
          res.status(404)
-         res.send({error:"user doesn't exist!!"})
+         res.json({error:"user doesn't exist!!"})
      }
   };
  
@@ -115,11 +115,11 @@ let usersGet = async function(req, res)
   {
      try{
          await User.deleteOne({_id: req.params.id})
-         res.status(204).send()
+         res.status(204).json()
      }
      catch{
          res.status(404)
-         res.send({error:"user doesn't exist!"})
+         res.json({error:"user doesn't exist!"})
      }
   };
 

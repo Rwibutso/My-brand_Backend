@@ -15,7 +15,7 @@ let addBlog = async function(req, res)
     //make validation before making the user
      
     const {error} = blogValidation(req.body);
-    if (error) return res.status(400).send(error.details[0].message); 
+    if (error) return res.status(400).json(error.details[0].message); 
 
    // create new blog 
     const user = await User.findById({ _id: req.params.id});
@@ -27,9 +27,9 @@ let addBlog = async function(req, res)
     });
     try{
         const saveBlog = await blog.save();
-        res.send(saveBlog);
+        res.json(saveBlog);
     }catch (err) {
-        res.status(400).send("..."+err); 
+        res.status(400).json("..."+err); 
     }
 };  
 
@@ -39,7 +39,7 @@ let addBlog = async function(req, res)
 let Allblogs = async function(req, res)
  {
     const blogs = await Blog.find();
-    res.send(blogs);
+    res.json(blogs);
 };
  
 //Get blog by id
@@ -48,10 +48,10 @@ let oneBlog = async function(req, res)
  {
      try{
          const blog = await Blog.findOne({ _id: req.params.id})
-         res.send(blog)
+         res.json(blog)
      } catch{
          res.status(404)
-         res.send({error: "blog doesn't exist!"})
+         res.json({error: "blog doesn't exist!"})
      }
 };
  
@@ -69,11 +69,11 @@ let patchBlog = async function(req, res)
              blog.description = req.body.description
          }
          await blog.save()
-         res.send(blog)
+         res.json(blog)
      }
      catch{
          res.status(404)
-         res.send({error:"blog doesn't exist!!"})
+         res.json({error:"blog doesn't exist!!"})
      }
 };
  
@@ -83,11 +83,11 @@ let patchBlog = async function(req, res)
   {
      try{
          await Blog.deleteOne({_id: req.params.id})
-         res.status(204).send()
+         res.status(204).json()
      }
      catch{
          res.status(404)
-         res.send({error:"blog doesn't exist!"})
+         res.json({error:"blog doesn't exist!"})
      }
 };
 
@@ -96,7 +96,7 @@ let patchBlog = async function(req, res)
 let likeBlog  = async function(req, res) {
     // validate the like
     const {error} = likeValidation(req.body);
-    if (error) return res.status(400).send(error.details[0].message); 
+    if (error) return res.status(400).json(error.details[0].message); 
   
     // create a like
     const user = await User.findOne({ _id: req.params.id}); 
@@ -113,9 +113,9 @@ let likeBlog  = async function(req, res) {
       if (existingLike) return res.status(400).json({ msg: 'Blog already liked' });
   
       const saveLike = await like.save();
-      res.send(saveLike);
+      res.json(saveLike);
     } catch (err) {
-      res.status(400).send("..." + err); 
+      res.status(400).json("..." + err); 
     }
   };
 
@@ -123,10 +123,10 @@ let getlikeBlog = async function(req, res)
    {
     try{
         const likes = await Like.find({ blogId: req.params.id});
-        res.send(likes)
+        res.json(likes)
       
   } catch {
-      res.send("blog doesn't exist!")
+      res.json("blog doesn't exist!")
   }
 };
   
@@ -134,10 +134,10 @@ let getlikeBlognumber = async function(req, res)
    {
     try{
         const likes = await Comment.find({ blogId: req.params.id});
-        res.send(likes).length
+        res.json(likes).length
       
   } catch {
-      res.send("blog doesn't exist!")
+      res.json("blog doesn't exist!")
   }
 };
 
@@ -148,7 +148,7 @@ let commentBlog  = async function(req, res)
     // validate the comment
 
     const {error} = commentValidation(req.body);
-    if (error) return res.status(400).send(error.details[0].message); 
+    if (error) return res.status(400).json(error.details[0].message); 
 
     // create a comment
     const user = await User.findOne({_id: req.params.id});
@@ -160,9 +160,9 @@ let commentBlog  = async function(req, res)
     });
     try{    
         const saveComment = await comment.save()
-        res.send(saveComment);
+        res.json(saveComment);
     }catch (err) {
-        res.status(400).send("..."+err); 
+        res.status(400).json("..."+err); 
     };
 }
 
@@ -173,10 +173,10 @@ let getcomentBlog = async function(req, res)
 
       try{
             const comments = await Comment.find({ blogId: req.params.id});
-            res.send(comments)
+            res.json(comments)
           
       } catch {
-          res.send("blog doesn't exist!")
+          res.json("blog doesn't exist!")
       }
 };
 
@@ -187,10 +187,10 @@ let getcomentBlogNumber = async function(req, res)
 
       try{
             const comments = await Comment.find({ blogId: req.params.id});
-            res.send(comments).length
+            res.json(comments).length
           
       } catch {
-          res.send("blog doesn't exist!")
+          res.json("blog doesn't exist!")
       }
 };
   
