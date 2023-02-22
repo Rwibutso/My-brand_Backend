@@ -16,7 +16,7 @@ let addMessage = async function(req, res)
     const {error} = messageValidation(req.body);
     if (error) {
         console.log(error)
-        return res.status(400).send(error.details[0].message); 
+        return res.status(400).json(error.details[0].message); 
     }
 
    // create new message 
@@ -29,9 +29,9 @@ let addMessage = async function(req, res)
     });
     try{
         const saveMessage = await message.save();
-        res.send(saveMessage);
+        res.json(saveMessage);
     }catch (err) {
-        res.status(400).send(err); 
+        res.status(400).json(err); 
         console.log(err)
     }
 };  
@@ -42,7 +42,7 @@ let addMessage = async function(req, res)
 let allMessage = async function(req, res)
 {
     const message = await Message.find();
-    res.send(message);
+    res.json(message);
  };
  
  
@@ -53,11 +53,11 @@ let deleteMessage = async function(req, res)
   {
      try{
          await Message.deleteOne({_id: req.params.id})
-         res.status(204).send()
+         res.status(204).json()
      }
      catch{
          res.status(404)
-         res.send({error:"message doesn't exist!"})
+         res.json({error:"message doesn't exist!"})
      }
   };
 
