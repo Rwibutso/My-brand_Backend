@@ -18,12 +18,12 @@ let addBlog = async function(req, res)
     if (error) return res.status(400).json(error.details[0].message); 
 
    // create new blog 
-    const user = await User.findById({ _id: req.params.id});
+    // const user = await User.findById({ _id: req.params.id});
     const blog = new Blog({
         tittle: req.body.tittle,
         description: req.body.description,
-        user: user.id,
-        name: user.firstname +" "+ user.lastname
+        // user: user.id,
+        // name: user.firstname +" "+ user.lastname
     });
     try{
         const saveBlog = await blog.save();

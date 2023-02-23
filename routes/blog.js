@@ -15,7 +15,7 @@ blogs.get("/blog-comment-get/:id", getcomentBlog);
 
 blogs.get("/blog-comment-length/:id", getcomentBlogNumber);
 
-blogs.post("/add-blog/:id", addBlog);
+blogs.post("/add-blog", addBlog);
 
 blogs.post("/blog-like/:id", likeBlog);
 

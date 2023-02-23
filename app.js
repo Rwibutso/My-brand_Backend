@@ -371,18 +371,11 @@ app.use('/api', users);
 
 /**
  * @swagger
- * /api/add-blog/{id}:
+ * /api/add-blog:
  *  post:
  *      summary: Add a blog 
  *      tags: [blogs]
  *      description: This will add a blog in the database
- *      parameters:
- *           - in: path
- *             name: id
- *             required: true
- *             description: Numeric ID required
- *             schema:
- *                 type: string
  *      requestBody: 
  *            required: true
  *            content:
